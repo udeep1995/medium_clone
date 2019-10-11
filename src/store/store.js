@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import ApiService from "../auth/index";
+import { SET_USER } from "./mutation.type";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -12,19 +13,33 @@ export default new Vuex.Store({
     doLogout(state, payload) {
       state.isLogin = false;
       state.user = null;
+    },
+    setUser(state, payload) {
+      state.user = payload;
+      state.isLogin = true;
     }
   },
   actions: {
     registerAccount({ commit }, payload) {
-      console.log(payload);
       return new Promise((resolve, reject) => {
         ApiService.post("/users", payload)
           .then(resp => {
-            console.log(resp);
-            resolve();
+            commit(SET_USER, resp);
+            resolve(resp);
           })
           .catch(err => {
-            console.error(err);
+            reject(err);
+          });
+      });
+    },
+    signIn({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        ApiService.post("/users/login", payload)
+          .then(resp => {
+            commit(SET_USER, resp);
+            resolve(resp);
+          })
+          .catch(err => {
             reject(err);
           });
       });

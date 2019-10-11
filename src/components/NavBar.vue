@@ -26,16 +26,11 @@
 <script>
 import store from "../store/store.js";
 export default {
-  data() {
-    return {
-      isLogin: false,
-      user: null
-    };
+  computed: {
+    isLogin: () => store.state.isLogin,
+    user: () => store.state.user
   },
-  mounted() {
-    this.isLogin = store.state.isLogin;
-    this.user = store.state.user;
-  },
+
   methods: {
     doLogout() {
       store.commit("doLogout");
