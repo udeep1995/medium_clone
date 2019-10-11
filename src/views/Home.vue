@@ -6,15 +6,27 @@
         <p>A Place to share knowledge</p>
       </div>
     </div>
+
+    <div class="container page">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="feed-toggle">
+            <ArticleFeed></ArticleFeed>
+          </div>
+          <router-view></router-view>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
+import ArticleFeed from "../components/ArticleFeed";
 export default {
   name: "home",
-  components: {}
+  components: {
+    ArticleFeed
+  }
 };
 </script>
 <style scoped>

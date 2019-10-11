@@ -33,7 +33,7 @@ export default {
 
   methods: {
     doLogout() {
-      store.commit("doLogout");
+      store.commit("doLogout", { user: null });
       if (this.$route.path !== "/") this.$router.push({ name: "Home" });
     }
   }
