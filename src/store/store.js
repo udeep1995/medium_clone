@@ -6,13 +6,16 @@ import {
   SET_ARTICLES,
   RESET_ARTICLES,
   DO_LOGOUT,
-  RESET_USER
+  RESET_USER,
+  ARTICLE_LOADING,
+  ARTICLE_LOADED
 } from "./mutation.type";
 import {
   GET_ARTICLES,
   REGISTER_ACCOUNT,
   SIGN_IN,
-  SIGN_OUT
+  SIGN_OUT,
+  GET_ARTICLE
 } from "./action.type";
 import { clearToken, saveToken } from "../auth/storage";
 Vue.use(Vuex);
@@ -24,6 +27,21 @@ export default new Vuex.Store({
     articles: {
       isLoaded: false,
       data: null
+    },
+    article: {
+      isLoaded: false,
+      data: {
+        author: {},
+        body: "",
+        createdAt: "",
+        description: "",
+        favorited: false,
+        favoritesCount: 0,
+        slug: "",
+        tagList: [],
+        title: "",
+        updatedAt: ""
+      }
     }
   },
   mutations: {
@@ -46,9 +64,23 @@ export default new Vuex.Store({
     [RESET_USER](state, payload) {
       state.isLogin = false;
       state.user = payload.user;
+    },
+    [ARTICLE_LOADING](state) {
+      state.article.isLoaded = false;
+      state.article.data = null;
+    },
+    [ARTICLE_LOADED](state, payload) {
+      state.article.isLoaded = true;
+      state.article.data = payload;
     }
   },
   actions: {
+    [GET_ARTICLE]({ commit }, payload) {
+      commit(ARTICLE_LOADING);
+      return ApiService.get(`articles/${payload}`).then(({ data }) => {
+        commit(ARTICLE_LOADED, data.article);
+      });
+    },
     [REGISTER_ACCOUNT]({ commit }, payload) {
       return new Promise((resolve, reject) => {
         ApiService.post("/users", payload)
