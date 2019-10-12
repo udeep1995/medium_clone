@@ -1,8 +1,20 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import ApiService from "../auth/index";
-import { SET_USER, SET_ARTICLES, RESET_ARTICLES } from "./mutation.type";
-import { GET_ARTICLES } from "./action.type";
+import {
+  SET_USER,
+  SET_ARTICLES,
+  RESET_ARTICLES,
+  DO_LOGOUT,
+  RESET_USER
+} from "./mutation.type";
+import {
+  GET_ARTICLES,
+  REGISTER_ACCOUNT,
+  SIGN_IN,
+  SIGN_OUT
+} from "./action.type";
+import { clearToken, saveToken } from "../auth/storage";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -15,11 +27,11 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    doLogout(state, payload) {
+    [DO_LOGOUT](state, payload) {
       state.isLogin = false;
       state.user = payload.user;
     },
-    setUser(state, payload) {
+    [SET_USER](state, payload) {
       state.user = payload;
       state.isLogin = true;
     },
@@ -30,14 +42,20 @@ export default new Vuex.Store({
     [RESET_ARTICLES](state, payload) {
       state.articles.isLoaded = false;
       state.articles.data = payload.data;
+    },
+    [RESET_USER](state, payload) {
+      state.isLogin = false;
+      state.user = payload.user;
     }
   },
   actions: {
-    registerAccount({ commit }, payload) {
+    [REGISTER_ACCOUNT]({ commit }, payload) {
       return new Promise((resolve, reject) => {
         ApiService.post("/users", payload)
           .then(resp => {
-            commit(SET_USER, resp);
+            commit(SET_USER, resp.data.user);
+            saveToken(resp.data.user.token);
+            ApiService.createHeader();
             resolve(resp);
           })
           .catch(err => {
@@ -45,17 +63,24 @@ export default new Vuex.Store({
           });
       });
     },
-    signIn({ commit }, payload) {
+    [SIGN_IN]({ commit }, payload) {
       return new Promise((resolve, reject) => {
         ApiService.post("/users/login", payload)
           .then(resp => {
-            commit(SET_USER, resp);
+            commit(SET_USER, resp.data.user);
+            saveToken(resp.data.user.token);
+            ApiService.createHeader();
             resolve(resp);
           })
           .catch(err => {
             reject(err);
           });
       });
+    },
+    [SIGN_OUT]({ commit }) {
+      clearToken();
+      ApiService.clearHeader();
+      commit(RESET_USER, { user: null });
     },
     [GET_ARTICLES]({ commit }, payload) {
       return new Promise((resolve, reject) => {

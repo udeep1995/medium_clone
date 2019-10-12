@@ -25,6 +25,7 @@
 </template>
 <script>
 import store from "../store/store.js";
+import { SIGN_OUT } from "../store/action.type.js";
 export default {
   computed: {
     isLogin: () => store.state.isLogin,
@@ -33,6 +34,7 @@ export default {
 
   methods: {
     doLogout() {
+      this.$store.dispatch(SIGN_OUT);
       store.commit("doLogout", { user: null });
       if (this.$route.path !== "/") this.$router.push({ name: "Home" });
     }
