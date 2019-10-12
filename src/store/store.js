@@ -117,7 +117,7 @@ export default new Vuex.Store({
     [GET_ARTICLES]({ commit }, payload) {
       return new Promise((resolve, reject) => {
         ApiService.get(
-          `/articles?limit=${payload.limit}&offset=${payload.offset}`
+          `/articles?limit=${payload.limit}&offset=${payload.pageOffset}`
         )
           .then(resp => {
             commit(SET_ARTICLES, resp.data);
