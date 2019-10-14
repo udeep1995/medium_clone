@@ -70,7 +70,9 @@ export default {
       this.$store
         .dispatch(GET_ARTICLE, slug)
         .then(resp => {
-          console.log(this.$store.state.article.data);
+          this.title = resp.article.title;
+          this.description = resp.article.description;
+          this.body = resp.article.body;
         })
         .catch(err => {
           console.error(err);
@@ -80,12 +82,17 @@ export default {
   methods: {
     async submitArticle() {
       const { title, description, body } = this;
-      // const tagList = this.tagList.map(tag => tag.content);
       let { slug } = this.$route.params;
       if (slug) {
-        this.$store.dispatch(UPDATE_ARTICLE)({
-          slug,
-          article: { title, description, body, tagList }
+        const updatedArticle = {
+          slug: this.$route.params.slug,
+          article: { title, description, body }
+        };
+        this.$store.dispatch(UPDATE_ARTICLE, updatedArticle).then(article => {
+          this.$router.push({
+            name: "Article",
+            params: { slug: article.data.article.slug }
+          });
         });
       } else {
         const newArticle = {

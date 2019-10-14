@@ -46,3 +46,8 @@ export default {
   }
 };
 </script>
+<style lang="css" scoped>
+.navbar-nav{
+  flex-direction: unset;
+}
+</style>

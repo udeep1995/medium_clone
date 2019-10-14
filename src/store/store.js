@@ -11,7 +11,8 @@ import {
   ARTICLE_LOADED,
   SET_USER_ARTICLES,
   USER_ARTICLE_LOADING,
-  USER_ARTICLE_LOADED
+  USER_ARTICLE_LOADED,
+  SET_ARTICLE_USER
 } from "./mutation.type";
 import {
   GET_ARTICLES,
@@ -21,7 +22,11 @@ import {
   GET_ARTICLE,
   GET_USER_FEED,
   CREATE_ARTICLE,
-  UPDATE_ARTICLE
+  UPDATE_ARTICLE,
+  DELETE_ARTICLE,
+  FOLLOW_USER,
+  UNFOLLOW_USER,
+  GET_ARTICLE_USER_PROFILE
 } from "./action.type";
 import { clearToken, saveToken } from "../auth/storage";
 Vue.use(Vuex);
@@ -56,6 +61,10 @@ export default new Vuex.Store({
         title: "",
         updatedAt: ""
       }
+    },
+    articleUser: {
+      isLoaded: false,
+      user: {}
     }
   },
   mutations: {
@@ -101,13 +110,24 @@ export default new Vuex.Store({
     },
     [USER_ARTICLE_LOADED](state) {
       state.userArticles.isLoaded = true;
+    },
+    [SET_ARTICLE_USER](state, payload) {
+      state.articleUser.isLoaded = payload.isLoaded;
+      state.articleUser.user = payload.user;
     }
   },
   actions: {
     [GET_ARTICLE]({ commit }, payload) {
       commit(ARTICLE_LOADING);
-      return ApiService.get(`articles/${payload}`).then(({ data }) => {
-        commit(ARTICLE_LOADED, data.article);
+      return new Promise((resolve, reject) => {
+        ApiService.get(`articles/${payload}`)
+          .then(({ data }) => {
+            commit(ARTICLE_LOADED, data.article);
+            resolve(data);
+          })
+          .catch(err => {
+            reject(err);
+          });
       });
     },
     [REGISTER_ACCOUNT]({ commit }, payload) {
@@ -166,11 +186,31 @@ export default new Vuex.Store({
       });
     },
     [UPDATE_ARTICLE]({ commit }, payload) {
-      const { slug, article } = payload;
-      return ApiService.put(`articles/${slug}`, { article });
+      return ApiService.put(`articles/${payload.slug}`, {
+        article: payload.article
+      });
     },
-    [CREATE_ARTICLE]({ commit }, article) {
-      return ApiService.post("/articles", article);
+    [CREATE_ARTICLE]({ commit }, payload) {
+      return ApiService.post("/articles", payload);
+    },
+    [DELETE_ARTICLE]({ commit }, payload) {
+      return ApiService.delete(`articles/${payload}`);
+    },
+    [GET_ARTICLE_USER_PROFILE]({ commit }, payload) {
+      commit(SET_ARTICLE_USER, { isLoaded: false, user: {} });
+      return ApiService.get(`profiles/${payload}`).then(({ data }) => {
+        commit(SET_ARTICLE_USER, { user: data.profile, isLoaded: true });
+      });
+    },
+    [FOLLOW_USER]({ commit }, payload) {
+      ApiService.post(`profiles/${payload}/follow`, {}).then(({ data }) => {
+        commit(SET_ARTICLE_USER, { user: data.profile, isLoaded: true });
+      });
+    },
+    [UNFOLLOW_USER]({ commit }, payload) {
+      ApiService.delete(`profiles/${payload}/follow`).then(({ data }) => {
+        commit(SET_ARTICLE_USER, { user: data.profile, isLoaded: true });
+      });
     }
   }
 });

@@ -7,3 +7,8 @@ export const GET_ARTICLE = "getArticle";
 export const GET_USER_FEED = "getUserFeed";
 export const CREATE_ARTICLE = "createArticle";
 export const UPDATE_ARTICLE = "updateArticle";
+export const DELETE_ARTICLE = "deleteArticle";
+export const FOLLOW_USER = "followUser";
+export const UNFOLLOW_USER = "unfollowUser";
+
+export const GET_ARTICLE_USER_PROFILE = "getArticleUserProfile";

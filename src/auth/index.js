@@ -10,6 +10,9 @@ const ApiService = {
   put(resource, params) {
     return Vue.axios.put(`${resource}`, params);
   },
+  delete(resource) {
+    return Vue.axios.delete(`${resource}`);
+  },
   createHeader() {
     const token = getToken();
     if (!token) return;
