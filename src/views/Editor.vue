@@ -57,6 +57,13 @@ export default {
       body: ""
     };
   },
+  beforeCreate() {
+    if (!this.$store.state.isLogin) {
+      this.$router.push({
+        name: "SignIn"
+      });
+    }
+  },
   mounted() {
     const { slug } = this.$route.params;
     if (slug) {

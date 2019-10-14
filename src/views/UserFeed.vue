@@ -22,8 +22,13 @@ export default {
   components: {
     ArticleCard
   },
-  created() {
-    this.$store.dispatch(GET_USER_FEED);
+  beforeCreate() {
+    if (!this.$store.state.isLogin) {
+      this.$router.push({ name: "SignIn" });
+    }
+  },
+  mounted() {
+    if (this.$store.state.isLogin) this.$store.dispatch(GET_USER_FEED);
   },
   computed: {
     articles() {
