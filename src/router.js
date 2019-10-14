@@ -34,6 +34,10 @@ export default new Router({
       props: true
     },
     {
+      path: "/editor",
+      component: () => import("./views/Editor.vue")
+    },
+    {
       path: "/editor/:slug",
       name: "Editor",
       component: () => import("./views/Editor.vue")

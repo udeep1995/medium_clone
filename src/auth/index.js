@@ -7,7 +7,9 @@ const ApiService = {
   post(resource, params) {
     return Vue.axios.post(`${resource}`, params);
   },
-
+  put(resource, params) {
+    return Vue.axios.put(`${resource}`, params);
+  },
   createHeader() {
     const token = getToken();
     if (!token) return;

@@ -4,11 +4,11 @@
       <div class="article-preview">Loading...</div>
     </template>
     <template v-else-if="articles.data && articles.data.length">
-      <article-preview
+      <ArticleCard
         v-for="(article, index) in articles.data"
         :key="article.slug + index"
         :article="article"
-      ></article-preview>
+      ></ArticleCard>
     </template>
     <template v-else>
       <div class="article-preview">No articles are here... yet.</div>

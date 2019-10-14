@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { CHANGE_PAGE } from "../store/action.type.js";
 export default {
   model: {
     prop: "value",

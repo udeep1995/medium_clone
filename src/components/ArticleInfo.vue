@@ -1,10 +1,10 @@
 <template>
   <div class="article-data" v-if="article">
-    <a href>
-      <img :src="article.author.image">
-    </a>
+    <span>
+      <img :src="article.author.image" />
+    </span>
     <div class="info">
-      <a href class="author">{{article.author.username}}</a>
+      <span class="author">{{article.author.username}}</span>
       <span class="date">{{article.createdAt}}</span>
     </div>
   </div>

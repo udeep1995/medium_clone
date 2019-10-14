@@ -19,10 +19,11 @@ import {
   SIGN_IN,
   SIGN_OUT,
   GET_ARTICLE,
-  GET_USER_FEED
+  GET_USER_FEED,
+  CREATE_ARTICLE,
+  UPDATE_ARTICLE
 } from "./action.type";
 import { clearToken, saveToken } from "../auth/storage";
-import { stat } from "fs";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -159,6 +160,13 @@ export default new Vuex.Store({
         const { articles, articlesCount } = data;
         commit(SET_USER_ARTICLES, { articles, articlesCount });
       });
+    },
+    [UPDATE_ARTICLE]({ commit }, payload) {
+      const { slug, article } = payload;
+      return ApiService.put(`articles/${slug}`, { article });
+    },
+    [CREATE_ARTICLE]({ commit }, article) {
+      return ApiService.post("/articles", article);
     }
   }
 });

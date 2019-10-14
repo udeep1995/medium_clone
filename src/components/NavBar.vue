@@ -8,7 +8,7 @@
         </li>
         <template v-if="isLogin">
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'Editor'}" active-class="active">
+            <router-link class="nav-link" to="/editor" active-class="active">
               <i class="ion-compose"></i>&nbsp; New Article
             </router-link>
           </li>
