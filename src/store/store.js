@@ -25,8 +25,13 @@ import {
 } from "./action.type";
 import { clearToken, saveToken } from "../auth/storage";
 Vue.use(Vuex);
-
+import VuexPersistence from "vuex-persist";
+const vuexLocal = new VuexPersistence({
+  key: "app-state",
+  storage: window.localStorage
+});
 export default new Vuex.Store({
+  plugins: [vuexLocal.plugin],
   state: {
     isLogin: false,
     user: null,
@@ -156,7 +161,6 @@ export default new Vuex.Store({
     [GET_USER_FEED]({ commit }) {
       commit(USER_ARTICLE_LOADING);
       return ApiService.get("articles/feed").then(({ data }) => {
-        console.log(data);
         const { articles, articlesCount } = data;
         commit(SET_USER_ARTICLES, { articles, articlesCount });
       });

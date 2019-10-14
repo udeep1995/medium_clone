@@ -59,7 +59,6 @@ export default {
   },
   mounted() {
     const { slug } = this.$route.params;
-    debugger;
     if (slug) {
       this.$store
         .dispatch(GET_ARTICLE, slug)
@@ -96,7 +95,7 @@ export default {
             });
           })
           .catch(err => {
-            console.log(err);
+            console.error(err);
           });
       }
     }
