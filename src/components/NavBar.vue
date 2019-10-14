@@ -8,6 +8,11 @@
         </li>
         <template v-if="isLogin">
           <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'Editor'}" active-class="active">
+              <i class="ion-compose"></i>&nbsp; New Article
+            </router-link>
+          </li>
+          <li class="nav-item">
             <a href="#" @click="doLogout" class="nav-link">Logout</a>
           </li>
         </template>

@@ -8,22 +8,30 @@ import {
   DO_LOGOUT,
   RESET_USER,
   ARTICLE_LOADING,
-  ARTICLE_LOADED
+  ARTICLE_LOADED,
+  SET_USER_ARTICLES,
+  USER_ARTICLE_LOADING,
+  USER_ARTICLE_LOADED
 } from "./mutation.type";
 import {
   GET_ARTICLES,
   REGISTER_ACCOUNT,
   SIGN_IN,
   SIGN_OUT,
-  GET_ARTICLE
+  GET_ARTICLE,
+  GET_USER_FEED
 } from "./action.type";
 import { clearToken, saveToken } from "../auth/storage";
+import { stat } from "fs";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     isLogin: false,
     user: null,
+    userArticles: {
+      isLoaded: false
+    },
     articles: {
       isLoaded: false,
       data: null
@@ -72,6 +80,21 @@ export default new Vuex.Store({
     [ARTICLE_LOADED](state, payload) {
       state.article.isLoaded = true;
       state.article.data = payload;
+    },
+
+    [SET_USER_ARTICLES](state, payload) {
+      const { articles, articlesCount } = payload;
+      state.userArticles = {
+        data: articles,
+        articlesCount,
+        isLoaded: true
+      };
+    },
+    [USER_ARTICLE_LOADING](state) {
+      state.userArticles.isLoaded = false;
+    },
+    [USER_ARTICLE_LOADED](state) {
+      state.userArticles.isLoaded = true;
     }
   },
   actions: {
@@ -127,6 +150,14 @@ export default new Vuex.Store({
             commit(RESET_ARTICLES, { data: null });
             reject(err);
           });
+      });
+    },
+    [GET_USER_FEED]({ commit }) {
+      commit(USER_ARTICLE_LOADING);
+      return ApiService.get("articles/feed").then(({ data }) => {
+        console.log(data);
+        const { articles, articlesCount } = data;
+        commit(SET_USER_ARTICLES, { articles, articlesCount });
       });
     }
   }

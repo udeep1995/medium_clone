@@ -4,3 +4,4 @@ export const SIGN_OUT = "signOut";
 
 export const GET_ARTICLES = "getArticles";
 export const GET_ARTICLE = "getArticle";
+export const GET_USER_FEED = "getUserFeed";

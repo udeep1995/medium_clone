@@ -5,3 +5,6 @@ export const SET_ARTICLES = "setArticles";
 export const RESET_ARTICLES = "resetArticles";
 export const ARTICLE_LOADING = "articleLoading";
 export const ARTICLE_LOADED = "articleLoaded";
+export const SET_USER_ARTICLES = "setUserArticle";
+export const USER_ARTICLE_LOADING = "userArticleLoading";
+export const USER_ARTICLE_LOADED = "userArticleLoaded";

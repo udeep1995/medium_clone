@@ -12,7 +12,10 @@ export default new Router({
     {
       path: "/",
       component: Home,
-      children: [{ path: "/", component: GlobalArticles, name: "Home" }]
+      children: [
+        { path: "/", component: GlobalArticles, name: "Home" },
+        { path: "/feed", component: () => import("./views/UserFeed.vue") }
+      ]
     },
     {
       path: "/signup",
@@ -29,6 +32,11 @@ export default new Router({
       name: "Article",
       component: () => import("./views/Article.vue"),
       props: true
+    },
+    {
+      path: "/editor/:slug",
+      name: "Editor",
+      component: () => import("./views/Editor.vue")
     }
   ]
 });
