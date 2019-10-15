@@ -9,3 +9,4 @@ export const SET_USER_ARTICLES = "setUserArticle";
 export const USER_ARTICLE_LOADING = "userArticleLoading";
 export const USER_ARTICLE_LOADED = "userArticleLoaded";
 export const SET_ARTICLE_USER = "setArticleUser";
+export const SET_COMMENT = "setComments";

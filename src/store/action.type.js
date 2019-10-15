@@ -12,3 +12,6 @@ export const FOLLOW_USER = "followUser";
 export const UNFOLLOW_USER = "unfollowUser";
 
 export const GET_ARTICLE_USER_PROFILE = "getArticleUserProfile";
+
+export const ADD_COMMENT = "addComment";
+export const GET_COMMENTS = "getComments";

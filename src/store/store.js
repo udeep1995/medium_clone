@@ -12,7 +12,8 @@ import {
   SET_USER_ARTICLES,
   USER_ARTICLE_LOADING,
   USER_ARTICLE_LOADED,
-  SET_ARTICLE_USER
+  SET_ARTICLE_USER,
+  SET_COMMENT
 } from "./mutation.type";
 import {
   GET_ARTICLES,
@@ -26,7 +27,9 @@ import {
   DELETE_ARTICLE,
   FOLLOW_USER,
   UNFOLLOW_USER,
-  GET_ARTICLE_USER_PROFILE
+  GET_ARTICLE_USER_PROFILE,
+  ADD_COMMENT,
+  GET_COMMENTS
 } from "./action.type";
 import { clearToken, saveToken } from "../auth/storage";
 Vue.use(Vuex);
@@ -65,6 +68,10 @@ export default new Vuex.Store({
     articleUser: {
       isLoaded: false,
       user: {}
+    },
+    comments: {
+      isLoaded: false,
+      data: {}
     }
   },
   mutations: {
@@ -114,6 +121,10 @@ export default new Vuex.Store({
     [SET_ARTICLE_USER](state, payload) {
       state.articleUser.isLoaded = payload.isLoaded;
       state.articleUser.user = payload.user;
+    },
+    [SET_COMMENT](state, payload) {
+      state.comments.isLoaded = payload.isLoaded;
+      state.comments.data = payload.data;
     }
   },
   actions: {
@@ -211,6 +222,32 @@ export default new Vuex.Store({
       ApiService.delete(`profiles/${payload}/follow`).then(({ data }) => {
         commit(SET_ARTICLE_USER, { user: data.profile, isLoaded: true });
       });
+    },
+    [ADD_COMMENT]({ commit }, payload) {
+      const { slug, comment } = payload;
+      ApiService.post(`articles/${slug}/comments`, {
+        comment: { body: comment }
+      })
+        .then(resp => {
+          commit(SET_COMMENT, { isLoaded: true, data: resp.data.comment });
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+    [GET_COMMENTS]({ commit }, payload) {
+      const { slug } = payload;
+      commit(SET_COMMENT, { isLoaded: false, data: {} });
+      ApiService.get(`articles/${slug}/comments`)
+        .then(resp => {
+          commit(SET_COMMENT, {
+            isLoaded: true,
+            data: resp.data.comments
+          });
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   }
 });

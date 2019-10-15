@@ -12,16 +12,24 @@
         <div v-if="article.isLoaded" class="col-md-12">{{article.data.body}}</div>
         <div v-else>Is loading...</div>
       </div>
-      <hr>
+      <hr />
     </div>
+    <template v-if="isLogin && articleSlug">
+      <CommentEditor :slug="article.data.slug" :author="article.data.author"></CommentEditor>
+    </template>
+    <CommentList></CommentList>
   </div>
 </template>
 <script>
 import { GET_ARTICLE } from "../store/action.type.js";
 import ArticleInfo from "../components/ArticleInfo";
+import CommentEditor from "../components/CommentEditor";
+import CommentList from "../components/CommentList";
 export default {
   components: {
-    ArticleInfo
+    ArticleInfo,
+    CommentEditor,
+    CommentList
   },
   props: ["slug"],
   mounted() {
@@ -30,6 +38,14 @@ export default {
   computed: {
     article() {
       return this.$store.state.article;
+    },
+    isLogin() {
+      return this.$store.state.isLogin;
+    },
+    articleSlug() {
+      if (this.article && this.article.data)
+        return this.$store.state.article.data.slug;
+      return null;
     }
   }
 };
