@@ -50,6 +50,9 @@ export default {
   },
   computed: {
     isAuthor() {
+      if (!this.$store.state.isLogin) {
+        return null;
+      }
       return this.$store.state.user.username === this.article.author.username;
     },
     isArticleUser() {
@@ -69,7 +72,13 @@ export default {
       });
     },
     follow() {
-      this.$store.dispatch(FOLLOW_USER, this.article.author.username);
+      if (!this.$store.state.isLogin) {
+        this.$router.push({
+          name: "SignIn"
+        });
+      } else {
+        this.$store.dispatch(FOLLOW_USER, this.article.author.username);
+      }
     },
     unfollow() {
       this.$store.dispatch(UNFOLLOW_USER, this.article.author.username);

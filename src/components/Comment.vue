@@ -1,12 +1,14 @@
 <template>
-  <div class="container card">
+  <div class="container card bg-light">
     <div class="card-block">
       <p class="card-text">{{comment.body}}</p>
     </div>
     <div class="card-footer">
+      <span class="text-right">{{commentAuthor}}</span>
       <span
-        class="date-posted"
+        class="date-posted text-muted"
       >{{new Date(comment.createdAt).toLocaleDateString()+" "}}{{new Date(comment.createdAt).toLocaleTimeString()}}</span>
+
       <button
         v-if="commentAuthor === user"
         class="btn btn-danger mod-options"
@@ -33,7 +35,8 @@ export default {
       return this.comment.author.username;
     },
     user() {
-      return this.$store.state.user.username;
+      if (this.$store.state.isLogin) return this.$store.state.user.username;
+      return null;
     }
   },
   methods: {

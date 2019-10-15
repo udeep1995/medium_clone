@@ -74,9 +74,7 @@ export default {
           this.description = resp.article.description;
           this.body = resp.article.body;
         })
-        .catch(err => {
-          console.error(err);
-        });
+        .catch(err => {});
     }
   },
   methods: {
@@ -108,9 +106,7 @@ export default {
               params: { slug: article.data.article.slug }
             });
           })
-          .catch(err => {
-            console.error(err);
-          });
+          .catch(err => {});
       }
     }
   }

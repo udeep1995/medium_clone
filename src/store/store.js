@@ -250,12 +250,9 @@ export default new Vuex.Store({
         comment: { body: comment }
       })
         .then(resp => {
-          console.log(resp);
           commit(PUSH_COMMENT, { isLoaded: true, comment: resp.data.comment });
         })
-        .catch(err => {
-          console.error(err);
-        });
+        .catch(err => {});
     },
     [GET_COMMENTS]({ commit }, payload) {
       const { slug } = payload;
@@ -267,9 +264,7 @@ export default new Vuex.Store({
             data: resp.data
           });
         })
-        .catch(err => {
-          console.error(err);
-        });
+        .catch(err => {});
     },
     [DELETE_COMMENT]({ commit }, payload) {
       const { slug, id } = payload;
@@ -280,9 +275,7 @@ export default new Vuex.Store({
             id
           });
         })
-        .catch(({ err }) => {
-          console.error(err);
-        });
+        .catch(({ err }) => {});
     }
   }
 });
