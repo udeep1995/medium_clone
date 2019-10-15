@@ -17,11 +17,13 @@
     <template v-if="isLogin && articleSlug">
       <CommentEditor :slug="article.data.slug" :author="article.data.author"></CommentEditor>
     </template>
-    <CommentList></CommentList>
+    <template v-if="articleSlug && allComments">
+      <CommentList :comments="allComments" :slug="article.data.slug"></CommentList>
+    </template>
   </div>
 </template>
 <script>
-import { GET_ARTICLE } from "../store/action.type.js";
+import { GET_ARTICLE, GET_COMMENTS } from "../store/action.type.js";
 import ArticleInfo from "../components/ArticleInfo";
 import CommentEditor from "../components/CommentEditor";
 import CommentList from "../components/CommentList";
@@ -34,6 +36,7 @@ export default {
   props: ["slug"],
   mounted() {
     this.$store.dispatch(GET_ARTICLE, this.slug);
+    this.$store.dispatch(GET_COMMENTS, { slug: this.slug });
   },
   computed: {
     article() {
@@ -46,6 +49,9 @@ export default {
       if (this.article && this.article.data)
         return this.$store.state.article.data.slug;
       return null;
+    },
+    allComments() {
+      return this.$store.state.comments;
     }
   }
 };

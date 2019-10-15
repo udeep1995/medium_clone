@@ -15,3 +15,4 @@ export const GET_ARTICLE_USER_PROFILE = "getArticleUserProfile";
 
 export const ADD_COMMENT = "addComment";
 export const GET_COMMENTS = "getComments";
+export const DELETE_COMMENT = "deleteComment";

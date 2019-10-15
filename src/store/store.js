@@ -13,7 +13,10 @@ import {
   USER_ARTICLE_LOADING,
   USER_ARTICLE_LOADED,
   SET_ARTICLE_USER,
-  SET_COMMENT
+  SET_COMMENT,
+  REMOVE_COMMENT,
+  RESET_COMMENT,
+  PUSH_COMMENT
 } from "./mutation.type";
 import {
   GET_ARTICLES,
@@ -29,7 +32,8 @@ import {
   UNFOLLOW_USER,
   GET_ARTICLE_USER_PROFILE,
   ADD_COMMENT,
-  GET_COMMENTS
+  GET_COMMENTS,
+  DELETE_COMMENT
 } from "./action.type";
 import { clearToken, saveToken } from "../auth/storage";
 Vue.use(Vuex);
@@ -71,7 +75,9 @@ export default new Vuex.Store({
     },
     comments: {
       isLoaded: false,
-      data: {}
+      data: {
+        comments: []
+      }
     }
   },
   mutations: {
@@ -125,6 +131,21 @@ export default new Vuex.Store({
     [SET_COMMENT](state, payload) {
       state.comments.isLoaded = payload.isLoaded;
       state.comments.data = payload.data;
+    },
+    [PUSH_COMMENT](state, payload) {
+      state.comments.isLoaded = payload.isLoaded;
+      state.comments.data.comments.unshift(payload.comment);
+    },
+    [REMOVE_COMMENT](state, payload) {
+      const { id, isLoaded } = payload;
+      state.comments.data.comments = state.comments.data.comments.filter(
+        comment => comment.id !== id
+      );
+      state.comments.isLoaded = isLoaded;
+    },
+    [RESET_COMMENT](state, payload) {
+      state.comments.isLoaded = payload.isLoaded;
+      state.comments.data = [];
     }
   },
   actions: {
@@ -229,7 +250,8 @@ export default new Vuex.Store({
         comment: { body: comment }
       })
         .then(resp => {
-          commit(SET_COMMENT, { isLoaded: true, data: resp.data.comment });
+          console.log(resp);
+          commit(PUSH_COMMENT, { isLoaded: true, comment: resp.data.comment });
         })
         .catch(err => {
           console.error(err);
@@ -237,15 +259,28 @@ export default new Vuex.Store({
     },
     [GET_COMMENTS]({ commit }, payload) {
       const { slug } = payload;
-      commit(SET_COMMENT, { isLoaded: false, data: {} });
+      commit(RESET_COMMENT, { isLoaded: false });
       ApiService.get(`articles/${slug}/comments`)
         .then(resp => {
           commit(SET_COMMENT, {
             isLoaded: true,
-            data: resp.data.comments
+            data: resp.data
           });
         })
         .catch(err => {
+          console.error(err);
+        });
+    },
+    [DELETE_COMMENT]({ commit }, payload) {
+      const { slug, id } = payload;
+      ApiService.delete(`articles/${slug}/comments/${id}`)
+        .then(data => {
+          commit(REMOVE_COMMENT, {
+            isLoaded: true,
+            id
+          });
+        })
+        .catch(({ err }) => {
           console.error(err);
         });
     }
