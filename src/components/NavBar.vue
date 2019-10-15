@@ -18,10 +18,10 @@
         </template>
         <template v-else>
           <li class="nav-item">
-            <router-link to="/signup" class="nav-link" active-class="active">Sign up</router-link>
+            <router-link to="/signup" class="nav-link signup" active-class="active">Sign up</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/signin" class="nav-link" active-class="active">Sign in</router-link>
+            <router-link to="/signin" class="nav-link signin" active-class="active">Sign in</router-link>
           </li>
         </template>
       </ul>
@@ -47,7 +47,7 @@ export default {
 };
 </script>
 <style lang="css" scoped>
-.navbar-nav{
+.navbar-nav {
   flex-direction: unset;
 }
 </style>

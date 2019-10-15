@@ -13,16 +13,18 @@
                 v-model="email"
                 class="form-control form-control-lg"
                 type="text"
+                id="email"
                 placeholder="Email"
-              >
+              />
             </fieldset>
             <fieldset class="form-group">
               <input
                 v-model="password"
                 class="form-control form-control-lg"
                 type="password"
+                id="password"
                 placeholder="Password"
-              >
+              />
             </fieldset>
             <button class="btn btn-lg btn-primary pull-xs-right">Sign In</button>
           </form>
