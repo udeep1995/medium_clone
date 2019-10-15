@@ -5,7 +5,9 @@
     </span>
     <div class="info">
       <span class="author">{{article.author.username}}</span>
-      <span class="date">{{article.createdAt}}</span>
+      <span
+        class="date"
+      >{{" "+ new Date(article.createdAt).toLocaleDateString()+" "}}{{new Date(article.createdAt).toLocaleTimeString()}}</span>
     </div>
     <template v-if="!isAuthor">
       <button

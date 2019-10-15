@@ -4,7 +4,9 @@
       <p class="card-text">{{comment.body}}</p>
     </div>
     <div class="card-footer">
-      <span class="date-posted">{{comment.createdAt}}</span>
+      <span
+        class="date-posted"
+      >{{new Date(comment.createdAt).toLocaleDateString()+" "}}{{new Date(comment.createdAt).toLocaleTimeString()}}</span>
       <button
         v-if="commentAuthor === user"
         class="btn btn-danger mod-options"

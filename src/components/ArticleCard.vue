@@ -2,11 +2,13 @@
   <div class="article-preview">
     <div class="article-data">
       <a>
-        <img :src="article.author.image">
+        <img :src="article.author.image" />
       </a>
       <div class="info">
         {{article.author.username}}
-        <span class="date">{{article.createdAt}}</span>
+        <span
+          class="date"
+        >{{new Date(article.createdAt).toLocaleDateString()+" "}}{{new Date(article.createdAt).toLocaleTimeString()}}</span>
       </div>
     </div>
     <router-link :to="{path: '/articles/'+ article.slug}" class="preview-link clearfix">
