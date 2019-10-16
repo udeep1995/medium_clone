@@ -61,10 +61,7 @@ export default new Vuex.Store({
         body: "",
         createdAt: "",
         description: "",
-        favorited: false,
-        favoritesCount: 0,
         slug: "",
-        tagList: [],
         title: "",
         updatedAt: ""
       }
