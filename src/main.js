@@ -13,7 +13,6 @@ import VueAxios from "vue-axios";
 import ApiService from "./auth";
 
 const API_ENDPOINT = "https://conduit.productionready.io/api";
-
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
 Vue.axios.defaults.baseURL = API_ENDPOINT;

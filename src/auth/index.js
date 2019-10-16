@@ -1,5 +1,6 @@
 import Vue from "vue";
 import { getToken } from "./storage";
+
 const ApiService = {
   get(resource) {
     return Vue.axios.get(`${resource}`);
@@ -22,5 +23,4 @@ const ApiService = {
     delete Vue.axios.defaults.headers.common["Authorization"];
   }
 };
-
 export default ApiService;
